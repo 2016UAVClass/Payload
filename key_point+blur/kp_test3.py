@@ -2,8 +2,11 @@
 import cv2
 from matplotlib import pyplot as plt
 import time 
-img_object = cv2.imread('grey_book.jpg', 0)
+
 import subprocess
+
+
+img_object = cv2.imread('notebook-11inchesaway.jpg', 0)
 
 #### 1. #### detect keypoints using surf detector and get descriptors
 min_hessian = 400
@@ -33,20 +36,21 @@ def call_adjust(x,y):
     difx=x-300
     dify=y-300
 
-    centered_thresh=20
+    speedwpm = 600
+    centered_thresh=40
     if abs(difx) < centered_thresh and abs(dify) < centered_thresh:
-        subprocess.call(["say", "down"])
+        subprocess.call(["say", "down", '-r', str(speedwpm)])
     else:
         if abs(difx)>abs(dify):
             if difx<0:
-                subprocess.call(["say", "left"])
+                subprocess.call(["say", "left", '-r', str(speedwpm)])
             else:
-                subprocess.call(["say", "right"])
+                subprocess.call(["say", "right", '-r', str(speedwpm)])
         else:
             if dify<0:
-                subprocess.call(["say", "forward"])
+                subprocess.call(["say", "forward", '-r', str(speedwpm)])
             else:
-                subprocess.call(["say", "back"])
+                subprocess.call(["say", "back", '-r', str(speedwpm)])
 
 
 while(True):
@@ -57,8 +61,6 @@ while(True):
 
     kp_scene, des_scene = surf.detectAndCompute(img_scene, None)
 
-
-    
     #### match ###3
 
     # FLANN parameters
@@ -83,18 +85,20 @@ while(True):
             
     (x,y)= make_center(kp_scene, matchesMask, matches)
 
-    cv2.circle(img_scene,(int(x),int(y)), 10, (0,0,255), -1)
-    cv2.imshow('pic', img_scene)
+    cv2.circle(img_scene,(int(x),int(y)), 4, (0,0,255), -1)
+
+
+    #cv2.imshow('frame', img_scene)
     call_adjust(x,y)
-    time.sleep(.5)
-    # draw_params = dict(matchColor = (0,0,255),
-    #                    singlePointColor = None,
-    #                    matchesMask = matchesMask,
-    #                    flags = 2)
+    #time.sleep(.01)
+    draw_params = dict(matchColor = (0,0,255),
+                        singlePointColor = None,
+                        matchesMask = matchesMask,
+                        flags = 2)
 
-    # img3 = cv2.drawMatchesKnn(img_object,kp_obj,img_scene,kp_scene,matches,None,**draw_params)
+    img3 = cv2.drawMatchesKnn(img_object,kp_obj,img_scene,kp_scene,matches,None,**draw_params)
 
-    # plt.imshow(img3,),plt.show()
+    plt.imshow(img3,),plt.show()
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
