@@ -1,4 +1,6 @@
 import cv2
+import math
+import PID
 import numpy as np
 
 cap = cv2.VideoCapture(0)
@@ -22,6 +24,10 @@ blob_detect_config.minInertiaRatio = 0.01
 
 blob_detect = cv2.SimpleBlobDetector_create(blob_detect_config)
 
+controller_out = PID.PID()
+controller_out.SetKp(1)
+controller_out.SetKi(1)
+controller_out.SetKd(1)
 
 def nothing(x):
     print(x)
@@ -47,12 +53,16 @@ while (1):
 
     im_with_keypoints = cv2.drawKeypoints(frame_cr_highlights, keypoints, np.array([]), (0, 255, 0),
                                           cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-    #if(len(keypoints) > 0):
-        #print("P1")
-        #print((height/2,width/2))
-        #print("P2")
-        #print((int(keypoints[0].pt[0]),int(keypoints[0].pt[1])))
-        #cv2.line(frame_cr_highlights,(height/2,width/2),(int(keypoints[0].pt[0]),int(keypoints[0].pt[1])),(0,255,0),5)
+    if(len(keypoints) > 0):
+        center = (width/2, height/2)
+        target = (int(keypoints[0].pt[0]), int(keypoints[0].pt[1]))
+        distance = math.sqrt((center[0] - target[0])**2 + (center[1] - target[1])**2)
+
+        out_value = controller_out.GenOut(distance)
+        controller_out.SetPrevErr(distance)
+        print(out_value)
+
+        cv2.line(im_with_keypoints, center, target, (0, 255-distance, distance), 5)
 
     cv2.imshow('frame', im_with_keypoints)
 
