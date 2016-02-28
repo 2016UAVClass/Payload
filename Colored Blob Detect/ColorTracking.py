@@ -24,13 +24,13 @@ blob_detect_config.minInertiaRatio = 0.01
 
 blob_detect = cv2.SimpleBlobDetector_create(blob_detect_config)
 
-controller_out = PID.PID()
-controller_out.SetKp(1)
-controller_out.SetKi(1)
-controller_out.SetKd(1)
+pid_controller = PID.PID()
+pid_controller.set_kp(0)
+pid_controller.set_ki(0)
+pid_controller.set_accumulated_error_max(1000)
+pid_controller.set_kd(1)
 
 def nothing(x):
-    print(x)
     return
 
 cv2.namedWindow('frame')
@@ -58,9 +58,7 @@ while (1):
         target = (int(keypoints[0].pt[0]), int(keypoints[0].pt[1]))
         distance = math.sqrt((center[0] - target[0])**2 + (center[1] - target[1])**2)
 
-        out_value = controller_out.GenOut(distance)
-        controller_out.SetPrevErr(distance)
-        print(out_value)
+        print(pid_controller.out(distance))
 
         cv2.line(im_with_keypoints, center, target, (0, 255-distance, distance), 5)
 

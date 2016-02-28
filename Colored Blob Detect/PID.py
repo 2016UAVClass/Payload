@@ -4,12 +4,12 @@ import time
 class PID:
 
     def __init__(self):
-        self.kp = 0
-        self.ki = 0
-        self.kd = 0
-        self.accumulated_error = 0
-        self.acceptable_error = 0
-        self.accumulated_max = 0
+        self.kp = 0.0
+        self.ki = 0.0
+        self.kd = 0.0
+        self.accumulated_error = 0.0
+        self.acceptable_error = 0.0
+        self.accumulated_max = 0.0
         self.prev_time = 0
         self.prev_error = None
 
@@ -34,19 +34,23 @@ class PID:
 
         # D
         current_time = time.time()
-        if self.prev_error is not None and self.time != 0:
+        if self.prev_error is not None and self.prev_time != 0:
             error_delta = error - self.prev_error
+            print(error_delta)
             time_delta = self.prev_time - current_time
-            d = (error_delta/time_delta * self.ki)
+            d = (error_delta/time_delta * self.kd)
         else:
             d = 0
+        self.prev_time = current_time
 
         # I factor
         self.accumulated_error += error
         if error <= self.acceptable_error:
             self.accumulated_error = 0
         if self.accumulated_error > self.accumulated_max:
-            self.acceptable_error = self.accumulated_max
+            self.accumulated_error = self.accumulated_max
         i = self.accumulated_error * self.ki
+
+        self.prev_error = error
 
         return p + i + d
