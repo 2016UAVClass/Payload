@@ -12,7 +12,7 @@ from cv_bridge import CvBridge, CvBridgeError
 from std_msgs.msg import String
 
 
-roslib.load_manifest('image_to_opencv')
+roslib.load_manifest('color_tracking')
 
 
 def nothing(x):
@@ -78,16 +78,16 @@ class ImageConverter:
             target = (int(keypoints[0].pt[0]), int(keypoints[0].pt[1]))
             distance = math.sqrt((center[0] - target[0])**2 + (center[1] - target[1])**2)
 
-            #print(self.pid_controller.out(distance))
+            # print(self.pid_controller.out(distance))
 
             cv2.line(im_with_keypoints, center, target, (0, 255-distance, distance), 5)
 
         cv2.imshow('frame', im_with_keypoints)
+        cv2.waitKey(1)
 
-        cv2.waitKey(5)
 
 def main(args):
-    rospy.init_node('image_to_opencv', anonymous=True)
+    rospy.init_node('color_tracking', anonymous=True)
     ic = ImageConverter()
     try:
         rospy.spin()
