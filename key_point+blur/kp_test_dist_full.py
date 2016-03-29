@@ -177,7 +177,7 @@ def get_obj_dist(object_list, scene_list, furthests, kp_hash):
 
 if __name__ == '__main__':
     kp_save_loc = 'notebook_kps_measurements.pickle'
-    img_object = cv2.imread('10inchAway.jpg', 0)
+    img_object = cv2.imread('trap_crop.png', 0)
     
     #### 1. #### detect keypoints using surf detector and get descriptors
     min_hessian = 400
@@ -264,18 +264,18 @@ if __name__ == '__main__':
         #cv2.imshow('frame', img_scene)
         #call_adjust(x,y)
         #time.sleep(.01)
-        #draw_params = dict(matchColor = (0,0,255),
-        #                    singlePointColor = None,
-        #                    matchesMask = matchesMask,
-        #                    flags = 2)
+        draw_params = dict(matchColor = (0,0,255),
+                            singlePointColor = None,
+                            matchesMask = matchesMask,
+                            flags = 2)
 
-        #img3 = cv2.drawMatchesKnn(img_object,kp_obj,img_scene,kp_scene,matches,None,**draw_params)
-        #font = cv2.FONT_HERSHEY_SIMPLEX
+        img3 = cv2.drawMatchesKnn(img_object,kp_obj,img_scene,kp_scene,matches,None,**draw_params)
+        font = cv2.FONT_HERSHEY_SIMPLEX
         if dist != None:
          
             print "\t\t\t\t\t\t", dist
-        #    cv2.putText(img3,"%.2f" % round(dist,2),(int(x+160),int(y+110)), font, 1,(0,255,0),2,cv2.LINE_AA)
-        #cv2.imshow('frame2', img3)
+            cv2.putText(img3,"%.2f" % round(dist,2),(int(x+160),int(y+110)), font, 1,(0,255,0),2,cv2.LINE_AA)
+        cv2.imshow('frame2', img3)
         #thingy = False
         #while not thingy:
         #    if cv2.waitKey(1) & 0xFF == ord('l'):

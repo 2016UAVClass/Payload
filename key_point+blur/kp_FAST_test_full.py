@@ -183,7 +183,7 @@ if __name__ == '__main__':
     min_hessian = 400
     cap = cv2.VideoCapture(0)
     surf = cv2.xfeatures2d.SURF_create(min_hessian)
-    surf - cv2.FastFeatureDetector()
+    surf = cv2.FastFeatureDetector()
     kp_obj, des_obj = surf.detectAndCompute(img_object, None)
 
     kp_pair_measurements = None
