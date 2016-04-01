@@ -12,7 +12,7 @@ from cv_bridge import CvBridge, CvBridgeError
 from std_msgs.msg import String
 
 
-roslib.load_manifest('color_tracking')
+roslib.load_manifest('image_to_opencv')
 
 
 def nothing(x):
@@ -24,7 +24,7 @@ class ImageConverter:
     def __init__(self):
         # self.image_pub = rospy.Publisher("cv2_processed_image", Image,queue_size=0)
         self.bridge = CvBridge()
-        self.image_sub = rospy.Subscriber("/usb_cam/image_raw",Image,self.callback)
+        self.image_sub = rospy.Subscriber("/mv_26803584/image_raw",Image,self.callback)
         self.blob_detect_config = cv2.SimpleBlobDetector_Params()
         self.blob_detect_config.filterByArea = True
         self.blob_detect_config.minArea = 200
@@ -69,6 +69,9 @@ class ImageConverter:
         # Threshold the HSV image to get only blue colors
         # mask = cv2.inRange(hsv, lower_green, upper_green)
 
+	#The following line improves detection at a tremendous performance cost.
+	#denoised = cv2.fastNlMeansDenoising(frame_cr_highlights, None,7,7)
+
         keypoints = self.blob_detect.detect(frame_cr_highlights)
 
         im_with_keypoints = cv2.drawKeypoints(frame_cr_highlights, keypoints, np.array([]), (0, 255, 0),
@@ -87,7 +90,7 @@ class ImageConverter:
 
 
 def main(args):
-    rospy.init_node('color_tracking', anonymous=True)
+    rospy.init_node('image_to_opencv', anonymous=True)
     ic = ImageConverter()
     try:
         rospy.spin()

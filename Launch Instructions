@@ -17,11 +17,11 @@ $rosrun dynamic_reconfigure dynparam set /mv_26803584 wbp 4
 
 Notes on dynamic camera config:
 - wbp is an integer value that controlls the white balance. Default used to be 1, but has been changed to 4
-- cbm is an integer value controlling camera orientation. 0 is the default value
+- cbm is an integer value. It's not clear what it controlls, but changing it distorts the image
 - aec is an integer value enabling automatic exposure control. Apparently this has issues in multi camera systems, according to a warning in the bluefox2 driver. 0 is off, 1 is on. Default is 0
 - ctm (?)
 - dcfm (?)
 - hdr I assume enables high dynamic range, but the visual result is the opposite of what I would expect. 0 or 1
-- expose_us is an integer value controlling the number of microseconds each frame is exposed for. Default is 5000
+- expose_us is an integer value controlling the number of microseconds each frame is exposed for. Default is 5000. 23336
 - gain_db is a float, default of 0.0, that adjusts camera gain. Think of gain as artificially increasing the brightness of an image
 - mm (?) Can only be adjusted in the launch file, not dynamically. Can't figure out what this one does, but the values 0 and 1 are valid. 0 is default.

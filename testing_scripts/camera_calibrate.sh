@@ -1,0 +1,1 @@
+/home/uavuser/camera_calibrate.sh
