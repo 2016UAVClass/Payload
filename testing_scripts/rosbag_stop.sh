@@ -1,1 +1,3 @@
-/home/uavuser/rosbag_stop.sh
+#! /bin/bash
+
+pkill -INT -f rosbag_stop
