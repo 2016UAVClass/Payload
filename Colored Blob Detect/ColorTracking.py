@@ -12,7 +12,7 @@ from cv_bridge import CvBridge, CvBridgeError
 from std_msgs.msg import String
 
 
-roslib.load_manifest('image_to_opencv')
+roslib.load_manifest('colored_blob_detect')
 
 
 def nothing(x):
@@ -90,7 +90,7 @@ class ImageConverter:
 
 
 def main(args):
-    rospy.init_node('image_to_opencv', anonymous=True)
+    rospy.init_node('colored_blob_detect', anonymous=True)
     ic = ImageConverter()
     try:
         rospy.spin()

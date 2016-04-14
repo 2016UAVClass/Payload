@@ -1,3 +1,3 @@
 #! /bin/bash
 
-pkill -INT -f rosbag_stop
+pkill -INT -f rosbag 
