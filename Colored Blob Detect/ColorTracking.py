@@ -8,6 +8,7 @@ import PID
 import roslib
 import numpy as np
 from sensor_msgs.msg import Image
+from geometry_msgs.msg import PoseStamped
 from cv_bridge import CvBridge, CvBridgeError
 from std_msgs.msg import String
 
@@ -24,7 +25,8 @@ class ImageConverter:
     def __init__(self):
         # self.image_pub = rospy.Publisher("cv2_processed_image", Image,queue_size=0)
         self.bridge = CvBridge()
-        self.image_sub = rospy.Subscriber("/mv_26803584/image_raw",Image,self.callback)
+        self.image_sub = rospy.Subscriber("/mv_26803584/image_raw",Image,self.frame_callback)
+	self.pose_sub = rospy.Subscriber("/mavros/local_position/pose",PoseStamped,self.pose_callback)
         self.blob_detect_config = cv2.SimpleBlobDetector_Params()
         self.blob_detect_config.filterByArea = True
         self.blob_detect_config.minArea = 200
@@ -53,7 +55,7 @@ class ImageConverter:
         cv2.namedWindow('frame')
         cv2.createTrackbar('Thresh_Min', 'frame', 0, 255, nothing)
 
-    def callback(self,data):
+    def frame_callback(self,data):
         try:
             frame = self.bridge.imgmsg_to_cv2(data, "bgr8")
         except CvBridgeError as e:
@@ -87,6 +89,10 @@ class ImageConverter:
 
         cv2.imshow('frame', im_with_keypoints)
         cv2.waitKey(1)
+    def pose_callback(self,data):
+        print("Roll: "+str(data.pose.orientation.x))
+        print("Pitch: "+str(data.pose.orientation.y))
+        print("Yaw: "+str(data.pose.orientation.z))
 
 
 def main(args):
