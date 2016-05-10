@@ -14,3 +14,4 @@ rosrun dynamic_reconfigure dynparam set /mv_30000337 expose_us 10
 rosrun dynamic_reconfigure dynparam set /mv_30000337 gain_db 0.0
 
 rosrun dynamic_reconfigure dynparam set /mv_30000337 fps 24
+

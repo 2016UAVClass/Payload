@@ -1,6 +1,10 @@
-kp_dist_test_full.py is the file you want
+kp_test_dist_full.py finds keypoints in an image, asks you to measure the distance between
+two points on the given image, in the kp_test_dist_full.py you will also need to specify the
+distance from the camera to the object. it will then calculate the distance to the object if
+it is confident it is visible. A version of this is written as a ros node fiducial_tracker
+or something like that. I didn't save it in git, oops.
 
-if you are using a new object to be tracked crop it and name it trap_crop.png.
+if you are using a new object to be tracked crop it and name it trap_crop.png .
 The first time you run this that image will be displayed with 2 keypoints highlighted.
 Measure the distance between those points and enter it into the shell.
 

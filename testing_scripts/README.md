@@ -1,0 +1,1 @@
+Running launch.sh will start both cameras, calibrate them according to the values in calibrate.sh, and begin recording the raw video to a rosbag
